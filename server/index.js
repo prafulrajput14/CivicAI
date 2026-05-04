@@ -127,7 +127,7 @@ if (process.env.NODE_ENV !== 'production') {
     console.log(`   📋 GET  /api/jobs?category=results  — Filter by category`);
     console.log(`   📊 GET  /api/jobs/stats   — Category stats`);
     console.log(`   🔄 POST /api/scrape       — Manual scrape trigger`);
-    console.log(`   ❤️  GET  /api/health       — Health check\n`);
+    console.log(`     GET  /api/health       — Health check\n`);
 
     // Always start cron job — scraper works with or without ZenRows
     startCronJob(ZENROWS_API_KEY || null);
