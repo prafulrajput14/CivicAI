@@ -1,0 +1,152 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* CivicAI Design System - Indian themed warm colors */
+
+@layer base {
+  :root {
+    --background: 40 33% 96%;
+    --foreground: 25 30% 15%;
+
+    --card: 40 40% 98%;
+    --card-foreground: 25 30% 15%;
+
+    --popover: 40 40% 98%;
+    --popover-foreground: 25 30% 15%;
+
+    --primary: 24 90% 50%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 145 45% 45%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 40 20% 90%;
+    --muted-foreground: 25 15% 45%;
+
+    --accent: 210 80% 55%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 35 25% 85%;
+    --input: 35 25% 85%;
+    --ring: 24 90% 50%;
+
+    --radius: 1rem;
+
+    /* Custom tokens for CivicAI */
+    --saffron: 24 90% 50%;
+    --saffron-light: 30 85% 92%;
+    --green-india: 145 45% 45%;
+    --green-light: 145 40% 92%;
+    --blue-soft: 210 80% 55%;
+    --blue-light: 210 75% 92%;
+    --rose-soft: 350 70% 60%;
+    --rose-light: 350 65% 92%;
+    --cream: 40 33% 96%;
+    --cream-dark: 35 25% 85%;
+
+    --gradient-hero: linear-gradient(135deg, hsl(24 90% 50%) 0%, hsl(30 85% 55%) 50%, hsl(145 45% 45%) 100%);
+    --gradient-card: linear-gradient(180deg, hsl(40 40% 98%) 0%, hsl(40 33% 96%) 100%);
+    --shadow-soft: 0 4px 20px -4px hsl(24 90% 50% / 0.15);
+    --shadow-card: 0 8px 32px -8px hsl(25 30% 15% / 0.1);
+
+    --sidebar-background: 40 40% 98%;
+    --sidebar-foreground: 25 30% 15%;
+    --sidebar-primary: 24 90% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 40 20% 90%;
+    --sidebar-accent-foreground: 25 30% 15%;
+    --sidebar-border: 35 25% 85%;
+    --sidebar-ring: 24 90% 50%;
+  }
+
+  .dark {
+    --background: 25 25% 8%;
+    --foreground: 40 20% 95%;
+
+    --card: 25 20% 12%;
+    --card-foreground: 40 20% 95%;
+
+    --popover: 25 20% 12%;
+    --popover-foreground: 40 20% 95%;
+
+    --primary: 24 85% 55%;
+    --primary-foreground: 25 25% 8%;
+
+    --secondary: 145 40% 40%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 25 15% 18%;
+    --muted-foreground: 40 15% 65%;
+
+    --accent: 210 75% 50%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 70% 45%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 25 15% 20%;
+    --input: 25 15% 20%;
+    --ring: 24 85% 55%;
+
+    --sidebar-background: 25 20% 10%;
+    --sidebar-foreground: 40 20% 95%;
+    --sidebar-primary: 24 85% 55%;
+    --sidebar-primary-foreground: 25 25% 8%;
+    --sidebar-accent: 25 15% 18%;
+    --sidebar-accent-foreground: 40 20% 95%;
+    --sidebar-border: 25 15% 20%;
+    --sidebar-ring: 24 85% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-hindi;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-hindi font-semibold;
+  }
+}
+
+@layer utilities {
+  .gradient-hero {
+    background: var(--gradient-hero);
+  }
+
+  .shadow-soft {
+    box-shadow: var(--shadow-soft);
+  }
+
+  .shadow-card {
+    box-shadow: var(--shadow-card);
+  }
+
+  .animate-pulse-gentle {
+    animation: pulse-gentle 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-gentle {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.8; transform: scale(1.02); }
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+}

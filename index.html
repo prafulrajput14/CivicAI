@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Set the document title to the host address dynamically -->
+  <title>Clever Link Bot</title>
+  <script>
+    document.title = window.location.host || "Clever Link Bot";
+  </script>
+  <meta name="description" content="Clever Link Bot Project" />
+  <meta name="author" content="Clever Link Bot" />
+
+  <!-- Open Graph Content -->
+  <meta property="og:title" content="Clever Link Bot" />
+  <meta property="og:description" content="Clever Link Bot Project" />
+  <meta property="og:type" content="website" />
+  <link rel="icon" href="data:," />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Clever Link Bot" />
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+
+</html>

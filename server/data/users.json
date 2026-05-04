@@ -1,0 +1,30 @@
+[
+  {
+    "id": "1777896117270",
+    "name": "Test User",
+    "email": "testuser@gmail.com",
+    "password": "$2b$10$O4da4OtZwjdn66OTz4WjCeExOTeQMB5XKxW4cNCCMg2LPqytfbg82",
+    "createdAt": "2026-05-04T12:01:57.270Z"
+  },
+  {
+    "id": "1777896381312",
+    "name": "Vikas",
+    "email": "saraswatvikas33@gmail.com",
+    "password": "$2b$10$l7X4VWut/LkBqwepLqEzPuC6YtL/LGBR.kmaFsImuz50hrK0Q6XlS",
+    "createdAt": "2026-05-04T12:06:21.312Z"
+  },
+  {
+    "id": "1777898229596",
+    "name": "Test User",
+    "email": "newuser999@gmail.com",
+    "password": "$2b$10$KSp3hgHKzzur6x3VdjlYB.iMVIr5nTpq.peef1rK1viIKxQ8YMSGm",
+    "createdAt": "2026-05-04T12:37:09.596Z"
+  },
+  {
+    "id": "1777898273665",
+    "name": "Praful",
+    "email": "prafulkumar1401@gmail.com",
+    "password": "$2b$10$ljAYMqGyAd6Ouu9lUWVffuB4XziREtw7OB9a/XS7BMOT..Pks7aAy",
+    "createdAt": "2026-05-04T12:37:53.665Z"
+  }
+]
