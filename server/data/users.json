@@ -26,5 +26,12 @@
     "email": "prafulkumar1401@gmail.com",
     "password": "$2b$10$ljAYMqGyAd6Ouu9lUWVffuB4XziREtw7OB9a/XS7BMOT..Pks7aAy",
     "createdAt": "2026-05-04T12:37:53.665Z"
+  },
+  {
+    "id": "1777908992996",
+    "name": "Aryan",
+    "email": "aryanrajput1393@gmail.com",
+    "password": "$2b$10$woPpLGI3XcGd0Qv0GVQc3eWy9sphyBsrDb43wHWh5yI331LYYzIX6",
+    "createdAt": "2026-05-04T15:36:32.996Z"
   }
 ]
