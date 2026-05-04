@@ -53,8 +53,8 @@ Make sure you have [Node.js](https://nodejs.org/) and `npm` (or `bun`/`yarn`) in
    ```env
    # Add your environment variables here
    PORT=5000
-   EMAIL_USER=your-email@gmail.com
-   EMAIL_PASS=your-app-password
+   MAIL_USER=your-email@gmail.com
+   MAIL_PASS=your-app-password
    ```
    *(Note: The `.env` file is excluded from version control for security.)*
 
