@@ -120,14 +120,18 @@ app.get("/api/health", (req, res) => {
 });
 
 // ===== START SERVER =====
-app.listen(PORT, () => {
-  console.log(`\n🚀 Sarkari Jobs API Server running on http://localhost:${PORT}`);
-  console.log(`   📋 GET  /api/jobs        — All jobs`);
-  console.log(`   📋 GET  /api/jobs?category=results  — Filter by category`);
-  console.log(`   📊 GET  /api/jobs/stats   — Category stats`);
-  console.log(`   🔄 POST /api/scrape       — Manual scrape trigger`);
-  console.log(`   ❤️  GET  /api/health       — Health check\n`);
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`\n🚀 Sarkari Jobs API Server running on http://localhost:${PORT}`);
+    console.log(`   📋 GET  /api/jobs        — All jobs`);
+    console.log(`   📋 GET  /api/jobs?category=results  — Filter by category`);
+    console.log(`   📊 GET  /api/jobs/stats   — Category stats`);
+    console.log(`   🔄 POST /api/scrape       — Manual scrape trigger`);
+    console.log(`   ❤️  GET  /api/health       — Health check\n`);
 
-  // Always start cron job — scraper works with or without ZenRows
-  startCronJob(ZENROWS_API_KEY || null);
-});
+    // Always start cron job — scraper works with or without ZenRows
+    startCronJob(ZENROWS_API_KEY || null);
+  });
+}
+
+export default app;
