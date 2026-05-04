@@ -1,6 +1,8 @@
 /**
  * Auth Router — Signup, Login, Forgot Password with OTP
- * Uses JSON-file storage, bcrypt for passwords, Nodemailer for OTP emails.
+ * Uses Supabase for persistent storage (works on Vercel),
+ * with JSON-file fallback for local development.
+ * bcrypt for passwords, Nodemailer for OTP emails.
  * Only allows @gmail.com addresses.
  */
 import { Router } from "express";
@@ -10,6 +12,7 @@ import nodemailer from "nodemailer";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
+import { createClient } from "@supabase/supabase-js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -19,11 +22,134 @@ const USERS_FILE = path.join(__dirname, "data", "users.json");
 const JWT_SECRET = process.env.JWT_SECRET || "civicai_secret_key_2026";
 const OTP_EXPIRY_MS = 5 * 60 * 1000; // 5 minutes
 
-// ─── Helpers ─────────────────────────────────────────────
+// ─── Supabase Client ─────────────────────────────────────
+const SUPABASE_URL = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL;
+const SUPABASE_KEY = process.env.VITE_SUPABASE_PUBLISHABLE_KEY || process.env.SUPABASE_KEY;
 
-function loadUsers() {
+let supabase = null;
+if (SUPABASE_URL && SUPABASE_KEY) {
+  supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+  console.log("[Auth] ✅ Supabase connected for user storage");
+} else {
+  console.warn("[Auth] ⚠️  Supabase not configured — using local JSON file storage");
+}
+
+// ─── Storage Layer (Supabase primary, JSON fallback) ─────
+
+/**
+ * Find user by email (case-insensitive)
+ */
+async function findUserByEmail(email) {
+  const lowerEmail = email.toLowerCase();
+
+  // Try Supabase first
+  if (supabase) {
+    try {
+      const { data, error } = await supabase
+        .from("civicai_users")
+        .select("*")
+        .eq("email", lowerEmail)
+        .single();
+
+      if (error && error.code !== "PGRST116") {
+        // PGRST116 = no rows found (not an actual error)
+        console.error("[Auth] Supabase findUser error:", error.message);
+      }
+      return data || null;
+    } catch (err) {
+      console.error("[Auth] Supabase findUser exception:", err.message);
+    }
+  }
+
+  // Fallback to JSON file
+  const users = loadUsersFromFile();
+  return users.find((u) => u.email.toLowerCase() === lowerEmail) || null;
+}
+
+/**
+ * Create a new user
+ */
+async function createUser(userData) {
+  // Try Supabase first
+  if (supabase) {
+    try {
+      const { data, error } = await supabase
+        .from("civicai_users")
+        .insert([{
+          id: userData.id,
+          name: userData.name,
+          email: userData.email,
+          password: userData.password,
+          created_at: userData.createdAt,
+        }])
+        .select()
+        .single();
+
+      if (error) {
+        // Duplicate email
+        if (error.code === "23505") {
+          return { success: false, duplicate: true };
+        }
+        console.error("[Auth] Supabase createUser error:", error.message);
+        throw new Error(error.message);
+      }
+      return { success: true, user: data };
+    } catch (err) {
+      console.error("[Auth] Supabase createUser exception:", err.message);
+      // Fall through to JSON fallback if Supabase fails
+    }
+  }
+
+  // Fallback to JSON file
+  const users = loadUsersFromFile();
+  const existing = users.find((u) => u.email.toLowerCase() === userData.email.toLowerCase());
+  if (existing) return { success: false, duplicate: true };
+
+  users.push(userData);
+  saveUsersToFile(users);
+  return { success: true, user: userData };
+}
+
+/**
+ * Update user's password
+ */
+async function updateUserPassword(email, hashedPassword) {
+  const lowerEmail = email.toLowerCase();
+
+  // Try Supabase first
+  if (supabase) {
+    try {
+      const { error } = await supabase
+        .from("civicai_users")
+        .update({ password: hashedPassword })
+        .eq("email", lowerEmail);
+
+      if (error) {
+        console.error("[Auth] Supabase updatePassword error:", error.message);
+        throw new Error(error.message);
+      }
+      return true;
+    } catch (err) {
+      console.error("[Auth] Supabase updatePassword exception:", err.message);
+    }
+  }
+
+  // Fallback to JSON file
+  const users = loadUsersFromFile();
+  const idx = users.findIndex((u) => u.email.toLowerCase() === lowerEmail);
+  if (idx === -1) return false;
+  users[idx].password = hashedPassword;
+  saveUsersToFile(users);
+  return true;
+}
+
+// ─── JSON File Helpers (local fallback) ──────────────────
+
+function loadUsersFromFile() {
   try {
     if (!fs.existsSync(USERS_FILE)) {
+      const dir = path.dirname(USERS_FILE);
+      if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
       fs.writeFileSync(USERS_FILE, JSON.stringify([], null, 2));
     }
     return JSON.parse(fs.readFileSync(USERS_FILE, "utf-8"));
@@ -32,10 +158,15 @@ function loadUsers() {
   }
 }
 
-function saveUsers(users) {
-  const dir = path.dirname(USERS_FILE);
-  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-  fs.writeFileSync(USERS_FILE, JSON.stringify(users, null, 2));
+function saveUsersToFile(users) {
+  try {
+    const dir = path.dirname(USERS_FILE);
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(USERS_FILE, JSON.stringify(users, null, 2));
+  } catch (err) {
+    console.error("[Auth] Failed to save users to file:", err.message);
+    // Non-fatal on Vercel (read-only FS), Supabase is primary
+  }
 }
 
 function isGmail(email) {
@@ -156,8 +287,8 @@ router.post("/signup", async (req, res) => {
       return res.status(400).json({ success: false, error: "Password must be at least 6 characters" });
     }
 
-    const users = loadUsers();
-    const existing = users.find((u) => u.email.toLowerCase() === email.toLowerCase());
+    // Check if user already exists
+    const existing = await findUserByEmail(email);
     if (existing) {
       return res.status(409).json({ success: false, error: "An account with this email already exists. Please login." });
     }
@@ -171,8 +302,13 @@ router.post("/signup", async (req, res) => {
       createdAt: new Date().toISOString(),
     };
 
-    users.push(newUser);
-    saveUsers(users);
+    const result = await createUser(newUser);
+    if (!result.success) {
+      if (result.duplicate) {
+        return res.status(409).json({ success: false, error: "An account with this email already exists. Please login." });
+      }
+      return res.status(500).json({ success: false, error: "Failed to create account" });
+    }
 
     const token = jwt.sign({ id: newUser.id, email: newUser.email, name: newUser.name }, JWT_SECRET, {
       expiresIn: "7d",
@@ -209,8 +345,7 @@ router.post("/login", async (req, res) => {
       });
     }
 
-    const users = loadUsers();
-    const user = users.find((u) => u.email.toLowerCase() === email.toLowerCase());
+    const user = await findUserByEmail(email);
     if (!user) {
       return res.status(401).json({ success: false, error: "No account found with this email. Please sign up." });
     }
@@ -255,8 +390,7 @@ router.post("/forgot-password", async (req, res) => {
       });
     }
 
-    const users = loadUsers();
-    const user = users.find((u) => u.email.toLowerCase() === email.toLowerCase());
+    const user = await findUserByEmail(email);
     if (!user) {
       return res.status(404).json({ success: false, error: "No account found with this email." });
     }
@@ -306,8 +440,7 @@ router.post("/verify-otp", async (req, res) => {
     // OTP verified — clean up and auto-login
     delete otpStore[email.toLowerCase()];
 
-    const users = loadUsers();
-    const user = users.find((u) => u.email.toLowerCase() === email.toLowerCase());
+    const user = await findUserByEmail(email);
     if (!user) {
       return res.status(404).json({ success: false, error: "User not found." });
     }
@@ -345,16 +478,14 @@ router.post("/reset-password", async (req, res) => {
       return res.status(400).json({ success: false, error: "Password must be at least 6 characters" });
     }
 
-    const users = loadUsers();
-    const userIndex = users.findIndex((u) => u.email.toLowerCase() === email.toLowerCase());
-    if (userIndex === -1) {
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    const updated = await updateUserPassword(email, hashedPassword);
+
+    if (!updated) {
       return res.status(404).json({ success: false, error: "User not found." });
     }
 
-    users[userIndex].password = await bcrypt.hash(newPassword, 10);
-    saveUsers(users);
-
-    const user = users[userIndex];
+    const user = await findUserByEmail(email);
     const token = jwt.sign({ id: user.id, email: user.email, name: user.name }, JWT_SECRET, {
       expiresIn: "7d",
     });
