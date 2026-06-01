@@ -1,80 +1,261 @@
-# CivicAI Platform
+# 🏛️ CivicAI — AI-Powered Citizen Assistance Platform
 
-Welcome to the **CivicAI Platform** repository. CivicAI is a comprehensive, modern web application designed to bridge the gap in rural and public services by providing an accessible interface for healthcare, government services, and employment opportunities.
+> An intelligent AI-driven platform designed to assist citizens by providing real-time information, automated query resolution, and smart digital support through conversational AI.
 
-## 🚀 Key Features
+🌐 **Live Demo:** https://civic-ai-2yyx.vercel.app/login
 
-### 1. 🔐 Secure Authentication System
-- End-to-end user authentication (Login / Signup).
-- Email OTP verification integrated via Nodemailer (Gmail SMTP).
-- Clean, split-screen UI with glassmorphic aesthetics.
+📂 **Repository:** https://github.com/prafulrajput14/CivicAI
 
-### 2. 🎙️ Voice Assistant & Multilingual UI
-- Voice-enabled accessibility tailored for rural users with transliterated greetings.
-- Speech synthesis and voice interactions in multiple Indian languages.
-- Clear digit pronunciation and markdown-sanitized outputs for a natural listening experience.
-
-### 3. 🏢 Government Jobs Portal
-- Automated scraper gathering the latest government job listings.
-- Standardized UI across supported languages for exploring job opportunities.
-
-## 🛠️ Technology Stack
-
-**Frontend:**
-- React (Vite)
-- TypeScript
-- Tailwind CSS & shadcn/ui
-- Lucide React Icons
-
-**Backend:**
-- Node.js & Express.js
-- Nodemailer for email services
-- Custom APIs for Auth, Scraper, and Voice integrations
-
-## ⚙️ Prerequisites
-
-Make sure you have [Node.js](https://nodejs.org/) and `npm` (or `bun`/`yarn`) installed.
-
-## 📦 Local Setup & Installation
-
-1. **Clone the repository**
-   ```sh
-   git clone <YOUR_GIT_URL>
-   cd <YOUR_PROJECT_NAME>
-   ```
-
-2. **Install dependencies**
-   ```sh
-   npm install
-   ```
-
-3. **Environment Setup**
-   Create a `.env` file in the root directory and add the required environment variables:
-   ```env
-   # Add your environment variables here
-   PORT=5000
-   MAIL_USER=your-email@gmail.com
-   MAIL_PASS=your-app-password
-   ```
-   *(Note: The `.env` file is excluded from version control for security.)*
-
-4. **Run the Development Servers**
-
-   **Start the Backend Server:**
-   ```sh
-   cd server
-   npm install
-   node index.js
-   ```
-
-   **Start the Frontend Client:**
-   Open a new terminal in the project root and run:
-   ```sh
-   npm run dev
-   ```
-
-## 🌐 Deployment
-This project is configured to run on Vercel or any modern hosting provider. Ensure environment variables are properly set in your hosting platform.
-<!-- 
 ---
-*CivicAI.* -->
+
+# 📌 Overview
+
+CivicAI is an AI-powered citizen assistance platform built to simplify access to public information and digital services through an intelligent conversational interface.
+
+The platform enables users to interact with an AI assistant capable of understanding queries, providing relevant responses, and improving accessibility to important civic information.
+
+Designed with modern web technologies and scalable architecture, CivicAI focuses on delivering a seamless, responsive, and user-friendly experience.
+
+---
+
+# ✨ Features
+
+## 🤖 AI-Powered Chat Assistant
+
+* Intelligent conversational interface
+* Real-time query handling
+* Context-aware responses
+* User-friendly interaction experience
+
+## ⚡ Smart Query Resolution
+
+* Automated information retrieval
+* Fast response generation
+* AI-driven assistance workflows
+* Improved user accessibility
+
+## 🔐 Authentication System
+
+* Secure JWT Authentication
+* User Registration & Login
+* Protected Routes
+* Session Management
+
+## 📊 Interactive Dashboard
+
+* Modern SaaS-style interface
+* Responsive design
+* User activity management
+* Clean navigation experience
+
+## 🎨 Premium User Experience
+
+* Mobile-friendly layout
+* Responsive UI components
+* Smooth user interactions
+* Professional design system
+
+---
+
+# 🛠️ Tech Stack
+
+## Frontend
+
+* React.js
+* Vite
+* Tailwind CSS
+* JavaScript (ES6+)
+* Axios
+
+## Backend
+
+* Node.js
+* Express.js
+
+## Database
+
+* MongoDB Atlas
+* Mongoose
+
+## Authentication
+
+* JWT Authentication
+* Protected API Routes
+
+## AI Integration
+
+* Large Language Models (LLMs)
+* Prompt Engineering
+* Conversational AI Workflow
+
+## Deployment
+
+* Vercel
+* Render
+* MongoDB Atlas
+
+---
+
+# 🏗️ Project Architecture
+
+```text
+CivicAI
+│
+├── frontend
+│   ├── components
+│   ├── pages
+│   ├── hooks
+│   ├── services
+│   └── assets
+│
+├── backend
+│   ├── controllers
+│   ├── routes
+│   ├── middleware
+│   ├── models
+│   ├── config
+│   └── services
+│
+└── README.md
+```
+
+---
+
+# 🚀 System Workflow
+
+```text
+User Query
+     │
+     ▼
+Authentication Layer
+     │
+     ▼
+AI Processing Engine
+     │
+     ▼
+Intent Understanding
+     │
+     ▼
+Response Generation
+     │
+     ▼
+Smart Citizen Assistance
+     │
+     ▼
+Real-Time User Interaction
+```
+
+---
+
+# 🚀 Installation
+
+## Clone Repository
+
+```bash
+git clone https://github.com/prafulrajput14/CivicAI.git
+```
+
+## Navigate to Project Directory
+
+```bash
+cd CivicAI
+```
+
+## Install Dependencies
+
+```bash
+npm install
+```
+
+## Run Frontend
+
+```bash
+npm run dev
+```
+
+## Run Backend
+
+```bash
+npm start
+```
+
+---
+
+# 🎯 Key Highlights
+
+* AI-Powered Citizen Assistance Platform
+* Real-Time Conversational AI
+* Smart Query Resolution System
+* JWT Authentication & Authorization
+* Full-Stack MERN Architecture
+* Responsive SaaS Dashboard
+* Scalable Backend Infrastructure
+* RESTful API Design
+* Cloud Deployment Ready
+
+---
+
+# 📚 Learning Outcomes
+
+This project strengthened practical understanding of:
+
+* Full-Stack Application Development
+* REST API Architecture
+* Authentication & Authorization
+* AI Workflow Integration
+* Prompt Engineering
+* MongoDB Data Modeling
+* Frontend State Management
+* Secure Coding Practices
+* Cloud Deployment Workflows
+
+---
+
+# 👨‍💻 Developer
+
+## Praful Kumar
+
+Final Year Computer Science Engineering Student at GLA University, Mathura.
+
+### Areas of Interest
+
+* Full-Stack Development
+* Artificial Intelligence Applications
+* Software Engineering
+* Backend Development
+* Scalable Web Systems
+* Problem Solving & DSA
+
+Recently built CivicAI as an AI-powered chatbot platform focused on intelligent query handling and real-time response generation.
+
+---
+
+# 🌐 Connect With Me
+
+### Portfolio
+
+https://prafulrajput14.github.io/My-Portfolio/
+
+### LinkedIn
+
+https://www.linkedin.com/in/praful-kumar1401/
+
+### GitHub
+
+https://github.com/prafulrajput14
+
+### LeetCode
+
+https://leetcode.com/u/prafulrajput_14/
+
+### Email
+
+[prafulkumar1401@gmail.com](mailto:prafulkumar1401@gmail.com)
+
+---
+
+# ⭐ Support
+
+If you found this project useful, please consider giving the repository a star.
+
+A ⭐ helps increase project visibility and supports future development.
